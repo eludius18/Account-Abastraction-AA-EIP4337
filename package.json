@@ -1,0 +1,36 @@
+{
+  "name": "account-abastraction-aa-eip4337",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@account-abstraction/contracts": "^0.6.0",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
+    "@nomiclabs/hardhat-waffle": "^2.0.6",
+    "@openzeppelin/contracts": "^4.2.0",
+    "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^9.1.0",
+    "chai": "^5.0.3",
+    "dotenv": "^16.4.1",
+    "ethereum-waffle": "^4.0.10",
+    "hardhat": "^2.19.5",
+    "hardhat-contract-sizer": "^2.10.0",
+    "hardhat-deploy": "^0.11.45",
+    "hardhat-gas-reporter": "^1.0.10",
+    "solidity-coverage": "^0.8.6",
+    "solidity-docgen": "^0.6.0-beta.36",
+    "typechain": "^8.3.2"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "ethers": "^5.7.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
