@@ -1,20 +1,25 @@
-import { ethers } from "hardhat";
 
-async function main() {
-  // We get the contract to deploy
-  const entryPoint = await ethers.getContractFactory("EntryPoint");
-  const entryPointInstance = await entryPoint.deploy();
+import { DeployFunction } from "hardhat-deploy/types";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-  // Wait for the contract to be deployed
-  await entryPointInstance.deployed();
+const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+  const { deployments, getNamedAccounts } = hre;
+  const { deployer } = await getNamedAccounts();
+  const { deploy } = deployments;
 
-  // The address the Contract WILL have once mined
-  console.log("EntryPoint deployed to:", entryPointInstance.address);
+  const gasPrice = '20000000000';
 
-  process.exit(0);
-}
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+  const entryPoint = await deploy("EntryPoint", {
+    from: deployer,
+    log: true,
+    waitConfirmations: 10,
+    gasPrice
+  });
+
+  console.log("EntryPoint deployed at: ", entryPoint.address);
+  
+};
+
+deploy.tags = ["EntryPoint"];
+export default deploy;

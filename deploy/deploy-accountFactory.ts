@@ -1,20 +1,25 @@
-import { ethers } from "hardhat";
 
-async function main() {
-  // We get the contract to deploy
-  const accountFactory = await ethers.getContractFactory("AccountFactory");
-  const accountFactoryInstance = await accountFactory.deploy();
+import { DeployFunction } from "hardhat-deploy/types";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-  // Wait for the contract to be deployed
-  await accountFactoryInstance.deployed();
+const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+  const { deployments, getNamedAccounts } = hre;
+  const { deployer } = await getNamedAccounts();
+  const { deploy } = deployments;
 
-  // The address the Contract WILL have once mined
-  console.log("Account Factory deployed to:", accountFactoryInstance.address);
+  const gasPrice = '20000000000';
 
-  process.exit(0);
-}
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+  const accountFactory = await deploy("AccountFactory", {
+    from: deployer,
+    log: true,
+    waitConfirmations: 10,
+    gasPrice
+  });
+
+  console.log("AccountFactory deployed at: ", accountFactory.address);
+  
+};
+
+deploy.tags = ["AccountFactory"];
+export default deploy;

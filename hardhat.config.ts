@@ -20,24 +20,27 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.9",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 200
-          }
-        }
-      },
-      {
         version: "0.8.12",
         settings: {
           optimizer: {
             enabled: true,
             runs: 200
-          }
+          }        
+        }
+      },
+      {
+        version: "0.8.9",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          }        
         }
       }
     ]
+  },
+  namedAccounts: {
+    deployer: 0
   },
   networks: {
     hardhat: {
