@@ -27,8 +27,7 @@ This project is an implementation of the Account Abstraction proposal (EIP-4337)
 4. Deploy the `AccountFactory` contract using `npx hardhat deploy --network localhost --tags AccountFactory`.
 5. Run the `execute.ts` script using `npx hardhat run --network localhost scripts/execute.ts`
 
-Please note that the `--network localhost` flag is used to specify that the contracts should be deployed to the local Hardhat network that you started in step 1.
-
+> **Note:** Please note that the `--network localhost` flag is used to specify that the contracts should be deployed to the local Hardhat network that you started in step 1.
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request.
