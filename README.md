@@ -21,10 +21,11 @@ This project is an implementation of the Account Abstraction proposal (EIP-4337)
 
 ## Running the Project
 
-1. Start a local Hardhat network in a new terminal window using `npx hardhat node`.
+1. Start a local Hardhat network in a new terminal window using `npx hardhat node --no-deploy`.
 2. In another terminal window, navigate to the project directory.
-3. Deploy the `EntryPoint` contract using `npx hardhat run --network localhost deploy/deploy-entryPoint.ts`.
-4. Deploy the `AccountFactory` contract using `npx hardhat run --network localhost deploy/deploy-accountFactory.ts`.
+3. Deploy the `EntryPoint` contract using `npx hardhat deploy --network localhost --tags EntryPoint`.
+4. Deploy the `AccountFactory` contract using `npx hardhat deploy --network localhost --tags AccountFactory`.
+5. Run the `execute.ts` script using `npx hardhat run --network localhost scripts/execute.ts`
 
 Please note that the `--network localhost` flag is used to specify that the contracts should be deployed to the local Hardhat network that you started in step 1.
 

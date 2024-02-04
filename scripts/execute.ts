@@ -1,8 +1,8 @@
 const hre = require("hardhat");
 
 const FACTORY_NONCE = 1;
-const FACTORY_ADDRESS = "0x15F2ea83eB97ede71d84Bd04fFF29444f6b7cd52";
-const ENTRYPOINT_ADDRESS = "0x0B32a3F8f5b7E5d315b9E52E640a49A89d89c820";
+const FACTORY_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const ENTRYPOINT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 async function main() {
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", ENTRYPOINT_ADDRESS);  
@@ -41,8 +41,8 @@ async function main() {
     callGasLimit: 200_000,
     verificationGasLimit: 200_000,
     preVerificationGas: 50_000,
-    maxFeePerGas: hre.ethers.utils.parseUnits("100", "gwei"),
-    maxPriorityFeePerGas: hre.ethers.utils.parseUnits("50", "gwei"),
+    maxFeePerGas: hre.ethers.parseUnits("100", "gwei"),
+    maxPriorityFeePerGas: hre.ethers.parseUnits("50", "gwei"),
     paymasterAndData: "0x",
     signature: "0x",
   };
