@@ -31,10 +31,6 @@ async function main() {
   await entryPoint.depositTo(sender, { 
     value: hre.ethers.parseEther("200"), 
   });
-  console.log("HELLO");
-
-  await entryPoint.incrementNonce(1);
-  console.log("HELLO");
   
 
   const userOps = {
