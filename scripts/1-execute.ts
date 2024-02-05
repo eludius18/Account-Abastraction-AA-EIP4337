@@ -1,8 +1,12 @@
 const hre = require("hardhat");
+import dotenv from 'dotenv';
 
-const FACTORY_NONCE = 1;
-const FACTORY_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
-const ENTRYPOINT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+dotenv.config();
+
+const FACTORY_NONCE = process.env.FACTORY_NONCE;
+const FACTORY_ADDRESS = process.env.FACTORY_ADDRESS;
+const ENTRYPOINT_ADDRESS = process.env.ENTRYPOINT_ADDRESS;
+const PAYMASTER_ADDRESS = process.env.PAYMASTER_ADDRESS;
 
 async function main() {
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", ENTRYPOINT_ADDRESS);  
@@ -24,11 +28,11 @@ async function main() {
     .slice(2);
 
   console.log("InitCode: ", initCode);
+  console.log("Sender: ", {sender});
 
   const Account = await hre.ethers.getContractFactory("Account");
 
-  
-  await entryPoint.depositTo(sender, { 
+  await entryPoint.depositTo(PAYMASTER_ADDRESS, { 
     value: hre.ethers.parseEther("200"), 
   });
   
@@ -43,7 +47,7 @@ async function main() {
     preVerificationGas: 50_000,
     maxFeePerGas: hre.ethers.parseUnits("100", "gwei"),
     maxPriorityFeePerGas: hre.ethers.parseUnits("50", "gwei"),
-    paymasterAndData: "0x",
+    paymasterAndData: PAYMASTER_ADDRESS,
     signature: "0x",
   };
 
