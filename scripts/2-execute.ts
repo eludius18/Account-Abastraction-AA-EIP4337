@@ -15,10 +15,8 @@ async function main() {
     from: FACTORY_ADDRESS,
     nonce: FACTORY_NONCE
   });
-
-  const AccountFactory = await hre.ethers.getContractFactory("AccountFactory");
-
-  const [signer0] = await hre.ethers.getSigners();
+  
+  const [signer0, signer1] = await hre.ethers.getSigners();
   const address0 = await signer0.getAddress();
 
   const initCode = "0x";
@@ -32,7 +30,7 @@ async function main() {
   });
   
 
-  const userOps = {
+  const userOp = {
     sender,
     nonce: await entryPoint.getNonce(sender, 0),
     initCode,
@@ -43,12 +41,13 @@ async function main() {
     maxFeePerGas: hre.ethers.parseUnits("100", "gwei"),
     maxPriorityFeePerGas: hre.ethers.parseUnits("50", "gwei"),
     paymasterAndData: PAYMASTER_ADDRESS,
-    signature: "0x",
+    signature: "0x"
   };
 
-  console.log("EntryPoint NONCE: ", await entryPoint.getNonce(sender, 0),);
+  const userOpHash = await entryPoint.getUserOpHash(userOp);
+  userOp.signature = await signer0.signMessage(hre.ethers.getBytes(userOpHash));
 
-  const tx = await entryPoint.handleOps([userOps], address0);
+  const tx = await entryPoint.handleOps([userOp], address0);
   const receipt = await tx.wait();
   console.log(receipt);
 
