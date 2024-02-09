@@ -55,6 +55,10 @@ const config: HardhatUserConfig = {
     localhost: {
       url: "http://127.0.0.1:8545"
     },
+    /* arbitrum: {
+      url: process.env.RPC_URL_ARBITRUM,
+      accounts:[`0x${process.env.PRIVATE_KEY}`],
+    }, */
   },
 };
 

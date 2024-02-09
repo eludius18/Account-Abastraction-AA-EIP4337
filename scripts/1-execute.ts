@@ -3,33 +3,36 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const FACTORY_NONCE = process.env.FACTORY_NONCE;
 const FACTORY_ADDRESS = process.env.FACTORY_ADDRESS;
 const ENTRYPOINT_ADDRESS = process.env.ENTRYPOINT_ADDRESS;
 const PAYMASTER_ADDRESS = process.env.PAYMASTER_ADDRESS;
 
 async function main() {
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", ENTRYPOINT_ADDRESS);  
-
-  const sender = hre.ethers.getCreateAddress({
-    from: FACTORY_ADDRESS,
-    nonce: FACTORY_NONCE
-  });
-
+  
   const AccountFactory = await hre.ethers.getContractFactory("AccountFactory");
 
   const [signer0] = await hre.ethers.getSigners();
   const address0 = await signer0.getAddress();
 
-  const initCode = 
+  let initCode = 
   FACTORY_ADDRESS +
   AccountFactory.interface
     .encodeFunctionData("createAccount", [address0])
     .slice(2);
+  
+  let sender;
+  try {
+    await entryPoint.getSenderAddress(initCode);  
+  } catch (ex: any) {
+    sender = "0x" + ex.data.data.slice(-40);
+  }
 
-  console.log("InitCode: ", initCode);
-  console.log("Sender: ", {sender});
-
+  /* const code = await hre.ethers.provider.getCode(sender);
+  if (code === "0x") {
+    initCode = "0x";
+  } */
+  
   const Account = await hre.ethers.getContractFactory("Account");
 
   await entryPoint.depositTo(PAYMASTER_ADDRESS, { 
