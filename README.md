@@ -29,19 +29,15 @@ This project is an implementation of the Account Abstraction proposal (EIP-4337)
 
 Follow these steps to deploy the contracts:
 
-1. Start a local Hardhat network in a new terminal window using `npx hardhat node --no-deploy`. This starts a local Ethereum network for development purposes
+1. Compile the contracts using `npx hardhat compile`. This step is necessary before you can deploy the contracts
 
-2. In another terminal window, navigate to the project directory
+2. Deploy the `AccountFactory` contract using `npx hardhat deploy --network arbitrum --tags AccountFactory`. This deploys the `AccountFactory`
 
-3. Compile the contracts using `npx hardhat compile`. This step is necessary before you can deploy the contracts
+3. Deploy the `EntryPoint` contract using `npx hardhat deploy --network arbitrum --tags EntryPoint`. This deploys the `EntryPoint` (When using Alchemy Bundler, interactions should be made through its EntryPoint Contract)
 
-4. Deploy the `EntryPoint` contract using `npx hardhat deploy --network localhost --tags EntryPoint`. This deploys the `EntryPoint`
+4. Deploy the `Paymaster` contract using `npx hardhat deploy --network arbitrum --tags Paymaster`. This deploys the `Paymaster`
 
-5. Deploy the `AccountFactory` contract using `npx hardhat deploy --network localhost --tags AccountFactory`. This deploys the `AccountFactory`
-
-6. Deploy the `Paymaster` contract using `npx hardhat deploy --network localhost --tags Paymaster`. This deploys the `Paymaster`
-
-> **Note:** The `--network localhost` flag is used to specify that the contracts should be deployed to the local Hardhat network that you started in step 1
+> **Note:** The `--network arbitrum` flag is used to specify that the contracts should be deployed to the Arbitrum Sepolia network that you started in step 1
 
 
 ## Setting Up Environment Variables
@@ -53,10 +49,11 @@ Before running the scripts, you need to set up your environment variables. Follo
 2. Open the `.env` file and add the following variables:
 
 ```env
-FACTORY_NONCE= 1
 FACTORY_ADDRESS=<YOUR_ACCOUNT_FACTORY_CONTRACT_ADDRESS>
-ENTRYPOINT_ADDRESS=<YOUR_ENTRYPOINT_CONTRACT_ADDRESS>
+ENTRYPOINT_ADDRESS=<YOUR_ENTRYPOINT_CONTRACT_ADDRESS> --> When using Alchemy Bundler, interactions should be made through its EntryPoint Contract
 PAYMASTER_ADDRESS=<YOUR_PAYMASTER_CONTRACT_ADDRESS>
+RPC_URL_ARBITRUM=<YOUR_ARBITRUM_RPC_URL>
+PRIVATE_KEY=<YOUR_PRIVATE_KEY>
 ```
 
 
@@ -64,11 +61,9 @@ PAYMASTER_ADDRESS=<YOUR_PAYMASTER_CONTRACT_ADDRESS>
 
 Follow these steps to execute the scripts:
 
-1. Run the `1-execute.ts` script using `npx hardhat run --network localhost scripts/1-execute.ts`. This script interacts with the deployed contracts for the first execution.
+1. Run the `1-execute.ts` script using `npx hardhat run --network arbitrum scripts/1-execute.js`. This script interacts with the deployed contracts for the first execution.
 
 2. Add `ACCOUNT_ADDRESS` to the `.env` file. The value for `ACCOUNT_ADDRESS` should be the `Sender` address logged to the console when executing the previous step. It should look like this: `ACCOUNT_ADDRESS=<YOUR_ACCOUNT_ADDRESS>`.
-
-2. Run the `2-execute.ts` script using `npx hardhat run --network localhost scripts/2-execute.ts`. This script interacts with the deployed contracts for subsequent executions.
 
 
 ## Checking Account Balances
@@ -76,13 +71,13 @@ Follow these steps to execute the scripts:
 You may want to run the `nonceAccount.ts` script for getting the nonce. You can do this by running:
 
 ```bash
-npx hardhat run --network localhost scripts/nonceAccount.ts
+npx hardhat run --network arbitrum scripts/nonceAccount.ts
 ```
 
 You may want to check the balance of the deployed contracts. You can do this by running the `accountBalance.ts` script:
 
 ```bash
-npx hardhat run --network localhost scripts/accountBalance.ts
+npx hardhat run --network arbitrum scripts/accountBalance.ts
 
 ```
 

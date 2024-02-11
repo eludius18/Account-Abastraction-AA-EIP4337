@@ -2,6 +2,7 @@
 pragma solidity ^0.8.9;
 
 import "./Account.sol";
+import "@account-abstraction/contracts/interfaces/IAccount.sol";
 import "@openzeppelin/contracts/utils/Create2.sol";
 
 contract AccountFactory {
@@ -12,9 +13,19 @@ contract AccountFactory {
         bytes memory byteCode = abi.encodePacked(type(Account).creationCode, abi.encode(owner));
 
         address addr = Create2.computeAddress(salt, keccak256(byteCode));
-        if (addr.code.length > 0) {
+        uint256 codeLenght = addr.code.length;
+        if (codeLenght > 0) {
             return addr;
         }
-        return Create2.deploy(0, salt, byteCode);
+        return deploy(salt, byteCode);
+    }
+
+    function deploy(bytes32 salt, bytes memory bytecode) internal returns (address addr) {
+        require(bytecode.length != 0, "Create2: bytecode length is zero");
+        /// @solidity memory-safe-assembly
+        assembly {
+            addr := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
+        }
+        require(addr != address(0), "Create2: Failed on deploy");
     }
 }
