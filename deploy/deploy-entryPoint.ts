@@ -1,4 +1,3 @@
-
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
@@ -18,7 +17,6 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   console.log("EntryPoint deployed at: ", entryPoint.address);
-  
 };
 
 deploy.tags = ["EntryPoint"];

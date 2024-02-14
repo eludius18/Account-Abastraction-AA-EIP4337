@@ -6,18 +6,18 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts();
   const { deploy } = deployments;
 
-  const gasPrice = '20000000000';
+const tokenName = "Eludius18 Token";
+const tokenSymbol = "ETR";
 
-
-  const accountFactory = await deploy("AccountFactory", {
+  const tokenerc20 = await deploy("TokenERC20", {
     from: deployer,
+    args: [tokenName, tokenSymbol],
     log: true,
     waitConfirmations: 10,
-    gasPrice
   });
 
-  console.log("AccountFactory deployed at: ", accountFactory.address);
+  console.log("TokenERC20 deployed at: ", tokenerc20.address);
 };
 
-deploy.tags = ["AccountFactory"];
+deploy.tags = ["TokenERC20"];
 export default deploy;

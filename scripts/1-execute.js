@@ -1,15 +1,20 @@
 const hre = require("hardhat");
+const ethers = require("ethers");
 require("dotenv").config();
 
-const FACTORY_ADDRESS = "0x0E0a6a938b5FCe4766e104d31BaCcB47dE827911";
-const PAYMASTER_ADDRESS = "0x7f35B3259dB9ce146eD52bC762ac320e1b3C73D6";
-const ENTRYPOINT_ADDRESS = "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789";
+const FACTORY_ADDRESS = process.env.FACTORY_ADDRESS;
+const ENTRYPOINT_ADDRESS = process.env.ENTRYPOINT_ADDRESS;
+const PAYMASTER_ADDRESS = process.env.PAYMASTER_ADDRESS;
+const TOKENERC20_ADDRESS = process.env.TOKENERC20_ADDRESS;
+const RECIPIENT_ADDRESS = process.env.RECIPIENT_ADDRESS;
+
 
 async function main() {
   const [signer0, signer1] = await hre.ethers.getSigners();
   const address0 = await signer0.getAddress();
 
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", ENTRYPOINT_ADDRESS);
+  const tokenerc20 = await hre.ethers.getContractAt("TokenERC20", TOKENERC20_ADDRESS);
 
   const AccountFactory = await hre.ethers.getContractFactory("AccountFactory");
   let initCode =
@@ -30,8 +35,13 @@ async function main() {
     initCode = "0x";
   }
 
-  const Account = await hre.ethers.getContractFactory("Account");
-  const callData = Account.interface.encodeFunctionData("execute");
+  const account = await hre.ethers.getContractFactory("Account");
+  const callDataOperations = [
+    ethers.getBytes(tokenerc20.interface.encodeFunctionData("transfer", [RECIPIENT_ADDRESS, 1200])),
+    ethers.getBytes(tokenerc20.interface.encodeFunctionData("transfer", [PAYMASTER_ADDRESS, 2000])),
+  ];
+  
+  const callData = await account.interface.encodeFunctionData("execute", [callDataOperations]);
 
   const userOp = {
     sender,

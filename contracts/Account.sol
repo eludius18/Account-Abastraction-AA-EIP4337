@@ -4,8 +4,9 @@ pragma solidity ^0.8.9;
 import "@account-abstraction/contracts/core/EntryPoint.sol";
 import "@account-abstraction/contracts/interfaces/IAccount.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/Multicall.sol";
 
-contract Account is IAccount {
+contract Account is IAccount, Multicall {
     address public owner;
     uint256 public count;
 
@@ -24,8 +25,11 @@ contract Account is IAccount {
 
     }
 
-    // this is our state changing function, which could be called anything
-    function execute() external {
-        count++;
+    //implement here the multicall function
+    function execute(bytes[] calldata data) 
+    external
+    returns (bytes[] memory results)
+    {
+        return this.multicall(data);
     }
 }
