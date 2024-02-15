@@ -10,6 +10,7 @@ const RECIPIENT_ADDRESS = process.env.RECIPIENT_ADDRESS;
 
 
 async function main() {
+  const hre = require("hardhat");
   const [signer0, signer1] = await hre.ethers.getSigners();
   const address0 = await signer0.getAddress();
 
@@ -36,12 +37,28 @@ async function main() {
   }
 
   const account = await hre.ethers.getContractFactory("Account");
-  const callDataOperations = [
-    ethers.getBytes(tokenerc20.interface.encodeFunctionData("transfer", [RECIPIENT_ADDRESS, 1200])),
-    ethers.getBytes(tokenerc20.interface.encodeFunctionData("transfer", [PAYMASTER_ADDRESS, 2000])),
+
+  const transferToKeccak256 = hre.ethers.keccak256(hre.ethers.toUtf8Bytes("transfer"));
+  const paddedTokenAddress = hre.ethers.hexZeroPad(TOKENERC20_ADDRESS, 32);
+
+  const calls = [
+    {
+      target: tokenerc20,
+      callData: `0x${transferToKeccak256}${paddedTokenAddress}`,
+    },
+    {
+      target: tokenerc20,
+      callData: `0x${transferToKeccak256}${paddedTokenAddress}`,
+    },
+    {
+      target: tokenerc20,
+      callData: `0x${transferToKeccak256}${paddedTokenAddress}`,
+    },
   ];
-  
-  const callData = await account.interface.encodeFunctionData("execute", [callDataOperations]);
+
+  const callData = await account.multicall(calls);
+
+
 
   const userOp = {
     sender,
@@ -58,6 +75,7 @@ async function main() {
       userOp,
       ENTRYPOINT_ADDRESS,
     ]);
+  
 
   const { maxFeePerGas } = await hre.ethers.provider.getFeeData();
 
