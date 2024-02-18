@@ -6,14 +6,11 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts();
   const { deploy } = deployments;
 
-  const gasPrice = '20000000000';
-
 
   const accountFactory = await deploy("AccountFactory", {
     from: deployer,
     log: true,
-    waitConfirmations: 10,
-    gasPrice
+    waitConfirmations: 10
   });
 
   console.log("AccountFactory deployed at: ", accountFactory.address);

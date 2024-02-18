@@ -6,14 +6,13 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts();
   const { deploy } = deployments;
 
-  const multicall = await deploy("Multicall", {
+  const batchtx = await deploy("BatchTx", {
     from: deployer,
-    log: true,
-    waitConfirmations: 10  
+    log: true
   });
 
-  console.log("Multicall deployed at: ", multicall.address);
+  console.log("BatchTx deployed at: ", batchtx.address);
 };
 
-deploy.tags = ["Multicall"];
+deploy.tags = ["BatchTx"];
 export default deploy;

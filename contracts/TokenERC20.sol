@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/Multicall.sol";
 
 /// @title Lottery Smart Contract using block timestamp/difficulty as a source of randomness.
 /// @author eludius18
@@ -13,7 +14,8 @@ contract TokenERC20 is
     ERC20,
     Ownable,
     Pausable,
-    ReentrancyGuard
+    ReentrancyGuard,
+    Multicall
 {
     constructor(string memory _name, string memory _symbol) 
     ERC20(_name, _symbol)

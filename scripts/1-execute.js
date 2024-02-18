@@ -1,23 +1,23 @@
 const hre = require("hardhat");
 const ethers = require("ethers");
+const batchtxOps = require('./1-batchTx-Ops.js');
 require("dotenv").config();
 
 const FACTORY_ADDRESS = process.env.FACTORY_ADDRESS;
 const ENTRYPOINT_ADDRESS = process.env.ENTRYPOINT_ADDRESS;
 const PAYMASTER_ADDRESS = process.env.PAYMASTER_ADDRESS;
 const TOKENERC20_ADDRESS = process.env.TOKENERC20_ADDRESS;
-const RECIPIENT_ADDRESS = process.env.RECIPIENT_ADDRESS;
-
 
 async function main() {
-  const hre = require("hardhat");
-  const [signer0, signer1] = await hre.ethers.getSigners();
+  
+  const [signer0] = await hre.ethers.getSigners();
   const address0 = await signer0.getAddress();
 
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", ENTRYPOINT_ADDRESS);
   const tokenerc20 = await hre.ethers.getContractAt("TokenERC20", TOKENERC20_ADDRESS);
 
   const AccountFactory = await hre.ethers.getContractFactory("AccountFactory");
+
   let initCode =
     FACTORY_ADDRESS +
     AccountFactory.interface
@@ -37,28 +37,35 @@ async function main() {
   }
 
   const account = await hre.ethers.getContractFactory("Account");
+  /* const accountAddress = await account.deploy();
 
-  const transferToKeccak256 = hre.ethers.keccak256(hre.ethers.toUtf8Bytes("transfer"));
-  const paddedTokenAddress = hre.ethers.hexZeroPad(TOKENERC20_ADDRESS, 32);
+  await accountAddress.connect(account).mint(accountAddress, ethers.parseEther("1")); */
 
-  const calls = [
-    {
-      target: tokenerc20,
-      callData: `0x${transferToKeccak256}${paddedTokenAddress}`,
-    },
-    {
-      target: tokenerc20,
-      callData: `0x${transferToKeccak256}${paddedTokenAddress}`,
-    },
-    {
-      target: tokenerc20,
-      callData: `0x${transferToKeccak256}${paddedTokenAddress}`,
-    },
-  ];
+  const tokenSupportedMultiDelegateCallData = [];
+  const tokenItf = account.interface;
+  tokenSupportedMultiDelegateCallData.push(
+    tokenItf.encodeFunctionData('mint', [
+      "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      ethers.parseEther("1.1"),
+    ]),
+    tokenItf.encodeFunctionData('transfer', [
+      "0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5",
+      ethers.parseEther("0.1"),
+    ]),
+    tokenItf.encodeFunctionData('transfer', [
+      "0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5",
+      ethers.parseEther("0.1"),
+    ]),
+    tokenItf.encodeFunctionData('transfer', [
+      "0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5",
+      ethers.parseEther("0.8"),
+    ])
+  );
 
-  const callData = await account.multicall(calls);
+  console.log("Token Supported Multi Delegate Call Data: ", tokenSupportedMultiDelegateCallData);
 
 
+  const callData = account.interface.encodeFunctionData("transfer",["0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5", ethers.parseEther("0.1")]);
 
   const userOp = {
     sender,
@@ -79,7 +86,7 @@ async function main() {
 
   const { maxFeePerGas } = await hre.ethers.provider.getFeeData();
 
-  const maxPriorityFeePerGas = await ethers.provider.send(
+  const maxPriorityFeePerGas = await hre.ethers.provider.send(
     "rundler_maxPriorityFeePerGas"
   );
 
