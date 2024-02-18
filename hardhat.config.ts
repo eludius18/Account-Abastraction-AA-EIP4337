@@ -47,6 +47,10 @@ const config: HardhatUserConfig = {
       url: process.env.RPC_URL_ARBITRUM,
       accounts:[`0x${process.env.PRIVATE_KEY}`],
     },
+    ethereum: {
+      url: process.env.RPC_URL_ETHEREUM_SEPOLIA,
+      accounts:[`0x${process.env.PRIVATE_KEY}`],
+    },
     hardhat: {
       mining: {
         auto: true,
