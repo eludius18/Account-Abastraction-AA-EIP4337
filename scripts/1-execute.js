@@ -44,28 +44,32 @@ async function main() {
   const tokenSupportedMultiDelegateCallData = [];
   const tokenItf = account.interface;
   tokenSupportedMultiDelegateCallData.push(
-    tokenItf.encodeFunctionData('mint', [
-      "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
-      ethers.parseEther("1.1"),
+    tokenItf.encodeFunctionData('transfer', [
+      "0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5",
+      ethers.parseEther("0"),
     ]),
     tokenItf.encodeFunctionData('transfer', [
       "0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5",
-      ethers.parseEther("0.1"),
+      ethers.parseEther("0"),
     ]),
     tokenItf.encodeFunctionData('transfer', [
       "0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5",
-      ethers.parseEther("0.1"),
+      ethers.parseEther("0"),
     ]),
     tokenItf.encodeFunctionData('transfer', [
       "0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5",
-      ethers.parseEther("0.8"),
+      ethers.parseEther("0"),
+    ]),
+    tokenItf.encodeFunctionData('transfer', [
+      "0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5",
+      ethers.parseEther("0"),
     ])
   );
 
   console.log("Token Supported Multi Delegate Call Data: ", tokenSupportedMultiDelegateCallData);
 
 
-  const callData = account.interface.encodeFunctionData("transfer",["0x8aD6e64723DCb6d8cBd3Ed285E5b234184D222A5", ethers.parseEther("0.1")]);
+  const callData = account.interface.encodeFunctionData("execute",[tokenSupportedMultiDelegateCallData]);
 
   const userOp = {
     sender,
