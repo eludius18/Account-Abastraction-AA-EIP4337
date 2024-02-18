@@ -1,12 +1,10 @@
 const hre = require("hardhat");
 const ethers = require("ethers");
-const batchtxOps = require('./1-batchTx-Ops.js');
 require("dotenv").config();
 
 const FACTORY_ADDRESS = process.env.FACTORY_ADDRESS;
 const ENTRYPOINT_ADDRESS = process.env.ENTRYPOINT_ADDRESS;
 const PAYMASTER_ADDRESS = process.env.PAYMASTER_ADDRESS;
-const TOKENERC20_ADDRESS = process.env.TOKENERC20_ADDRESS;
 
 async function main() {
   
@@ -14,8 +12,6 @@ async function main() {
   const address0 = await signer0.getAddress();
 
   const entryPoint = await hre.ethers.getContractAt("EntryPoint", ENTRYPOINT_ADDRESS);
-  const tokenerc20 = await hre.ethers.getContractAt("TokenERC20", TOKENERC20_ADDRESS);
-
   const AccountFactory = await hre.ethers.getContractFactory("AccountFactory");
 
   let initCode =
@@ -37,9 +33,6 @@ async function main() {
   }
 
   const account = await hre.ethers.getContractFactory("Account");
-  /* const accountAddress = await account.deploy();
-
-  await accountAddress.connect(account).mint(accountAddress, ethers.parseEther("1")); */
 
   const tokenSupportedMultiDelegateCallData = [];
   const tokenItf = account.interface;
@@ -67,7 +60,6 @@ async function main() {
   );
 
   console.log("Token Supported Multi Delegate Call Data: ", tokenSupportedMultiDelegateCallData);
-
 
   const callData = account.interface.encodeFunctionData("execute",[tokenSupportedMultiDelegateCallData]);
 
