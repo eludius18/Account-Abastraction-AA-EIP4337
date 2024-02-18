@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Multicall.sol";
 
 /// @title Lottery Smart Contract using block timestamp/difficulty as a source of randomness.
@@ -14,13 +15,14 @@ contract TokenERC20 is
     ERC20,
     Ownable,
     Pausable,
+    AccessControl,
     ReentrancyGuard,
     Multicall
 {
     constructor(string memory _name, string memory _symbol) 
     ERC20(_name, _symbol)
     {
-        _mint(msg.sender, 1000000000000000000000000);
+        _mint(owner(), 1000000000000000000000000);
     }
 
     function pause() public onlyOwner {
@@ -37,6 +39,14 @@ contract TokenERC20 is
 
     function burn(address account, uint256 amount) public {
         _burn(account, amount);
+    }
+
+    function mintBatchTx(address to, uint256 amount) external {
+        mint(to, amount);
+    }
+
+    function transferBatchTx(address to, uint256 amount) external {
+        transfer(to, amount);
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 amount)

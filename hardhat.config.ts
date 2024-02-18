@@ -47,10 +47,6 @@ const config: HardhatUserConfig = {
       url: process.env.RPC_URL_ARBITRUM,
       accounts:[`0x${process.env.PRIVATE_KEY}`],
     },
-    ethereum: {
-      url: process.env.RPC_URL_ETHEREUM_SEPOLIA,
-      accounts:[`0x${process.env.PRIVATE_KEY}`],
-    },
     hardhat: {
       mining: {
         auto: true,
@@ -64,12 +60,12 @@ const config: HardhatUserConfig = {
       url: "http://127.0.0.1:8545"
     },
   },
-  /* etherscan: {
+  etherscan: {
     apiKey: {
       arbitrum: process.env.ARBITRUM_API_KEY || "default",
       url: process.env.RPC_URL_ARBITRUM || "default"
     }
-  }, */
+  },
 };
 
 export default config;
