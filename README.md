@@ -81,6 +81,11 @@ npx hardhat run --network arbitrum scripts/accountBalance.ts
 
 ```
 
+## Example of Tx using AA-Bundler
+
+https://sepolia.arbiscan.io/tx/0xbd4a496ab1b9b5077227bb1fb8bac4f242e2b3fc5947b2f61386eabef96e3622
+
+![Bundler Call](Bundler-call.png)
 
 ## Contributing
 
