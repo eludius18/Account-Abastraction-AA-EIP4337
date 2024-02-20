@@ -1,5 +1,6 @@
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { run } from "hardhat";
 
 const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
@@ -14,6 +15,11 @@ const deploy: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   });
 
   console.log("AccountFactory deployed at: ", accountFactory.address);
+
+  /* await run("verify:verify", {
+    address: accountFactory.address,
+    contract: "contracts/AccountFactory.sol:AccountFactory",
+  }); */
 };
 
 deploy.tags = ["AccountFactory"];

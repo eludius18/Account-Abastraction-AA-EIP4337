@@ -37,6 +37,8 @@ Follow these steps to deploy the contracts:
 
 4. Deploy the `Paymaster` contract using `npx hardhat deploy --network arbitrum --tags Paymaster`. This deploys the `Paymaster`
 
+5. Deploy the `TokenERC20` contract using `npx hardhat deploy --network arbitrum --tags TokenERC20`. This deploys the `TokenERC20`
+
 > **Note:** The `--network arbitrum` flag is used to specify that the contracts should be deployed to the Arbitrum Sepolia network that you started in step 1
 
 
@@ -49,19 +51,41 @@ Before running the scripts, you need to set up your environment variables. Follo
 2. Open the `.env` file and add the following variables:
 
 ```env
-FACTORY_ADDRESS=<YOUR_ACCOUNT_FACTORY_CONTRACT_ADDRESS>
-ENTRYPOINT_ADDRESS=<YOUR_ENTRYPOINT_CONTRACT_ADDRESS> --> When using Alchemy Bundler, interactions should be made through its EntryPoint Contract
-PAYMASTER_ADDRESS=<YOUR_PAYMASTER_CONTRACT_ADDRESS>
+FACTORY_ADDRESS = <YOUR_ACCOUNT_FACTORY_CONTRACT_ADDRESS>
+ENTRYPOINT_ADDRESS = <YOUR_ENTRYPOINT_CONTRACT_ADDRESS> --> When using Alchemy Bundler, interactions should be made through its EntryPoint Contract
+PAYMASTER_ADDRESS = <YOUR_PAYMASTER_CONTRACT_ADDRESS>
+TOKENERC20_ADDRESS = <YOUR_TOKENERC20_CONTRACT_ADDRESS>
+
 RPC_URL_ARBITRUM=<YOUR_ARBITRUM_RPC_URL>
 PRIVATE_KEY=<YOUR_PRIVATE_KEY>
 ```
+
+## Setting Up Environment for Executing Batch Transactions
+
+In the `1-execute.js` script, we set up the environment for executing batch transactions on the Ethereum blockchain. 
+We declare the transactions we'd like to execute in a batch in the `tokenSupportedMultiDelegateCallData` array. Each item in the array represents a transaction we want to execute.
+
+Here's an example of how we declare a transaction:
+
+```
+tokenSupportedMultiDelegateCallData.push(
+  tokenItf.encodeFunctionData('transfer', [
+    <to Address>,
+    ethers.parseEther("<Qty>"),
+  ])
+);
+```
+
+In this example, we're calling the `transfer` function of the `TokenERC20` contract. The transfer function takes two arguments: the `recipient's address` and the `amount` to transfer. We encode these arguments using the `encodeFunctionData` method from the ethers.js library.
+
+In the `tokenSupportedMultiDelegateCallData` array, we can declare as many transactions as we want. These transactions will be executed in the order they are declared when the `1-execute.js` script is run.
 
 
 ## Executing the Scripts
 
 Follow these steps to execute the scripts:
 
-1. Run the `1-execute.ts` script using `npx hardhat run --network arbitrum scripts/1-execute.js`. This script interacts with the deployed contracts for the first execution.
+1. Run the `1-execute.js` script using `npx hardhat run --network arbitrum scripts/1-execute.js`. This script interacts with the deployed contracts 
 
 2. Add `ACCOUNT_ADDRESS` to the `.env` file. The value for `ACCOUNT_ADDRESS` should be the `Sender` address logged to the console when executing the previous step. It should look like this: `ACCOUNT_ADDRESS=<YOUR_ACCOUNT_ADDRESS>`.
 
