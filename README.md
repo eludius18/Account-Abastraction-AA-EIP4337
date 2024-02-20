@@ -107,7 +107,7 @@ npx hardhat run --network arbitrum scripts/accountBalance.ts
 
 ## Example of BatchTx using AA-Bundler
 
-https://sepolia.arbiscan.io/tx/0xbdfd35fe033f1b970dc877145f58b3602ccc16404aef5ed1d8334b2642528323
+https://sepolia.arbiscan.io/tx/0x1943d8c9cf4f84b192e1732ef34a2a285ca4bf53e894c462762af82d0773aa0d
 
 ![Bundler Multicall](Bundler-multicall.png)
 
