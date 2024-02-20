@@ -3,6 +3,23 @@
 This project is an implementation of the Account Abstraction proposal (EIP-4337) using Hardhat, a development environment for Ethereum. The project contains two main contracts: `EntryPoint` and `AccountFactory`
 
 
+## Branches Explanation
+
+This project uses different branches for various stages of development and deployment. Here's a brief explanation of each branch:
+
+### 1-run-localhost
+
+This branch is used for local development and testing. It contains all the necessary configurations and scripts to run the project on a local Ethereum network, such as Hardhat Network. This is the branch you should use when you want to develop new features or test existing ones in a local environment.
+
+### 2-arbitrum-deployment
+
+This branch is specifically for deploying the contracts to the Arbitrum network. It contains the necessary configurations and scripts to deploy the contracts to the Arbitrum testnet or mainnet. Use this branch when you're ready to test your contracts in a testnet environment or when you're ready to deploy to the mainnet.
+
+### 3-arbitrum-multicall
+
+This branch is used for executing batch transactions on the Arbitrum network. It contains scripts that use the multicall feature of the Arbitrum network to execute multiple contract calls in a single transaction. This is useful for reducing gas costs and simplifying transaction management.
+
+
 ## Project Structure
 
 - `contracts/`: Contains the Solidity contracts for the project
