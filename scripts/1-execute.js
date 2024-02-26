@@ -1,5 +1,6 @@
 const hre = require("hardhat");
 const ethers = require("ethers");
+const { JsonRpcProvider } = require("@ethersproject/providers");
 require("dotenv").config();
 
 const FACTORY_ADDRESS = process.env.FACTORY_ADDRESS;
@@ -8,6 +9,10 @@ const PAYMASTER_ADDRESS = process.env.PAYMASTER_ADDRESS;
 const TOKENERC20_ADDRESS = process.env.TOKENERC20_ADDRESS;
 
 async function main() {
+
+  const bundlerProvider = new JsonRpcProvider("http://127.0.0.1:3000");
+  hre.ethers.provider = bundlerProvider;
+
   
   const [signer0] = await hre.ethers.getSigners();
   const address0 = await signer0.getAddress();
@@ -21,12 +26,13 @@ async function main() {
     AccountFactory.interface
       .encodeFunctionData("createAccount", [address0])
       .slice(2);
-  let sender;
+  let sender = "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266";
+  /* console.log(`Init Code: ${initCode}`);
   try {
     await entryPoint.getSenderAddress(initCode);
   } catch (e) {
     sender = "0x" + e.data.slice(-40);
-  }
+  } */
   console.log(`Sender Address: ${sender}`);
 
   const code = await hre.ethers.provider.getCode(sender);

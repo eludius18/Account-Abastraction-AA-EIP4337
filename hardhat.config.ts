@@ -43,10 +43,10 @@ const config: HardhatUserConfig = {
     deployer: 0
   },
   networks: {
-    arbitrum: {
+    /* arbitrum: {
       url: process.env.RPC_URL_ARBITRUM,
       accounts:[`0x${process.env.PRIVATE_KEY}`],
-    },
+    }, */
     hardhat: {
       mining: {
         auto: true,
