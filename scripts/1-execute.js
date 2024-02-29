@@ -10,8 +10,8 @@ const TOKENERC20_ADDRESS = process.env.TOKENERC20_ADDRESS;
 
 async function main() {
 
-  const bundlerProvider = new JsonRpcProvider("http://127.0.0.1:3000");
-  hre.ethers.provider = bundlerProvider;
+  /* const bundlerProvider = new JsonRpcProvider("http://127.0.0.1:3000");
+  hre.ethers.provider = bundlerProvider; */
 
   
   const [signer0] = await hre.ethers.getSigners();
